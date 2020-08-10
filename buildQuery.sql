@@ -17,15 +17,15 @@
 -- FOREIGN KEY (TOUR_NAME, EVENT_YEAR, EVENT_MONTH, EVENT_DAY) REFERENCES EVENT
 
 
-USE buildQuery;
-
-CREATE TABLE TOUR (
+CREATE TABLE TOUR
+(
     TOUR_NAME NVARCHAR(100),
     DESCRIPTION NVARCHAR(500),
     PRIMARY KEY (TOUR_NAME)
 );
 
-CREATE TABLE CLIENT (
+CREATE TABLE CLIENT
+(
     CLIENT_ID INT,
     SURNAME NVARCHAR(100) NOT NULL,
     GIVEN_NAME NVARCHAR(100) NOT NULL,
@@ -34,7 +34,8 @@ CREATE TABLE CLIENT (
     PRIMARY KEY (CLIENT_ID)
 );
 
-CREATE TABLE EVENT (
+CREATE TABLE EVENT
+(
     TOUR_NAME NVARCHAR(100),
     EVENT_YEAR INT,
     CHECK (EVENT_YEAR <= 9999 AND EVENT_YEAR >= 1000),
@@ -48,7 +49,8 @@ CREATE TABLE EVENT (
     FOREIGN KEY (TOUR_NAME) REFERENCES TOUR
 );
 
-CREATE TABLE BOOKING (
+CREATE TABLE BOOKING
+(
     CLIENT_ID INT,
     TOUR_NAME NVARCHAR(100),
     EVENT_YEAR INT,
@@ -67,5 +69,41 @@ CREATE TABLE BOOKING (
 GO
 
 
-SELECT * FROM sys.tables;
+INSERT INTO TOUR
+    (TOUR_NAME, DESCRIPTION)
+VALUES
+    ('North', 'Tour of wineries and outlets of the Bedigo and Castlemaine region'),
+    ('South', 'Tour of wineries and outlets of Mornington Penisula'),
+    ('West', 'Tour of wineries and outlets of the Geelong and Otways region');
+
+INSERT INTO CLIENT
+    (CLIENT_ID, SURNAME, GIVEN_NAME, GENDER)
+VALUES
+    (1, 'Price', 'Taylor', 'M'),
+    (2, 'Gamble', 'Ellyse', 'F'),
+    (3, 'Tan', 'Tilly', 'F'),
+    (103038198, 'Tyrrell', 'Coryn', 'I');
+
+INSERT INTO EVENT
+    (TOUR_NAME, EVENT_YEAR, EVENT_MONTH, EVENT_DAY, FEE)
+VALUES
+    ('North', 2016, 'Jan', 9, 200),
+    ('North', 2016, 'Feb', 13, 225),
+    ('South', 2016, 'Jan', 9, 200),
+    ('South', 2016, 'Jan', 16, 200),
+    ('West', 2016, 'Jan', 29, 225);
+
+INSERT INTO BOOKING
+    (CLIENT_ID, TOUR_NAME, EVENT_YEAR, EVENT_MONTH, EVENT_DAY, PAYMENT, DATE_BOOKED)
+VALUES
+    (1, 'North', 2016, 'Jan', 9, 200, 2015-12-10),
+    (2, 'North', 2016, 'Jan', 9, 200, 2015-12-16),
+    (1, 'North', 2016, 'Feb', 13, 225, 2016-01-08),
+    (2, 'North', 2016, 'Feb', 13, 125, 2016-01-14),
+    (3, 'North', 2016, 'Feb', 13, 225, 2016-02-03),
+    (1, 'South', 2016, 'Jan', 9, 200, 2015-12-10),
+    (2, 'South', 2016, 'Jan', 16, 200, 2015-12-18),
+    (3, 'South', 2016, 'Jan', 16, 200, 2016-01-09),
+    (2, 'West', 2016, 'Jan', 29, 225, 2015-12-17),
+    (3, 'West', 2016, 'Jan', 29, 200, 2015-12-18);
 GO
